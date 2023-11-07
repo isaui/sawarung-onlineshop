@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  print('sudah kupencet');
   runApp(ProviderScope(child: const App()));
 
 }
