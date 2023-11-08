@@ -13,9 +13,11 @@ Hal ini berbeda dengan Stateless widget, yang mana jenis widget yang tidak memil
 2. widget yang saya gunakan:
 - Snackbar itu  digunakan untuk menampilkan pesan sementara atau notifikasi kecil di bagian bawah layar.
 - ElevatedButton digunakan untuk membuat tombol yang memiliki efek kenaikan (elevated) ketika ditekan.
-- Column itu widget yang digunakan untuk mengatur anak-anak widget dalam satu kolom vertikal.
+- Column itu widget yang digunakan untuk mengatur anak-anak widget dalam satu garis vertikal(kolom).
 - Scaffold itu digunakan sebagai kerangka utama untuk aplikasi Flutter. Fungsinya menyediakan tata letak umum untuk tampilan aplikasi, termasuk AppBar, Drawer, Floating Action Button, dan lain-lain.
-
+- Text untuk menampilkan teks
+- Container itu untuk membungkus anak widget dan menerapkan margin, padding, maupun decoration
+- Center itu untuk meletakkan anak widget di tengah
 3. Langkah-langkah:
 a. Membuat projek Flutter yang diberi nama sesuai dengan keinginan, dalam hal ini sawarung.
 b. Kemudian, karena saya membutuhkan package flutter riverpod, http, dan cached_network_image untuk kelanjutan tugas ini, maka saya mendaftarkan package-package tersebut ke pubspec.yaml .
