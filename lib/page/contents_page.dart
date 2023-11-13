@@ -4,6 +4,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:booking_app/provider/auth_provider.dart';
 
+import '../util/global_key.dart';
+
 class AppPage extends ConsumerStatefulWidget {
   @override
   _AppPageState createState() => _AppPageState();
@@ -29,6 +31,7 @@ class _AppPageState extends ConsumerState<AppPage> {
       }
     });
     return Scaffold(
+      key: scaffoldKey,
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {

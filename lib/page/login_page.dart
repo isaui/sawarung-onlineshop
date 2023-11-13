@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:booking_app/provider/auth_provider.dart';
 
 class LoginPage extends ConsumerStatefulWidget{
-  const LoginPage({super.key});
+  final  updateSocketFunc; // Tambahkan parameter
+
+  const LoginPage({Key? key, required this.updateSocketFunc}) : super(key: key);
   ConsumerState<LoginPage> createState()=> _LoginPageState();
 }
 class _LoginPageState extends ConsumerState<LoginPage>{
@@ -117,7 +119,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                       }
                                       else{
-                                        String? res  = await login(username, password, context);
+                                        String? res  = await login(username, password, context, ref, widget.updateSocketFunc);
                                         if(res != null){
                                           setLoginState(ref,res);
                                           Navigator.pushReplacementNamed(context, '/app');

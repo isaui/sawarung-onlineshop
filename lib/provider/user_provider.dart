@@ -1,22 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-class UserData {
-  final String id;
-  final String username;
-  final String fullName;
-  final String profilePicture;
-
-  UserData({required this.id, required this.username, required this.fullName, required this.profilePicture});
-}
+import 'package:booking_app/models/user.dart';
 
 class UserDataNotifier extends StateNotifier<UserData?> {
-  UserDataNotifier() : super(null);
+  UserDataNotifier() : super(UserData(id: '', username: '', fullName: '', profilePicture: '', dateJoined: '', email: '',
+      nomorTelepon: '', alamat: '', description: ''));
 
   void setUserData(UserData userData) {
     state = userData;
   }
 
   void clearUserData() {
-    state = null;
+    state = UserData(id: '', username: '', fullName: '', profilePicture: '', dateJoined: '', email: '',
+        nomorTelepon: '', alamat: '', description: '');
   }
 }
 

@@ -1,16 +1,18 @@
+import 'package:booking_app/provider/register_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:booking_app/component/normal_textinput.dart';
 import 'package:booking_app/auth/authentication.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterPage extends StatefulWidget{
+class RegisterPage extends ConsumerStatefulWidget{
   const RegisterPage({super.key});
   @override
-  State<RegisterPage> createState() {
+  ConsumerState<RegisterPage> createState() {
     // TODO: implementRe createState
     return _RegisterpageState();
   }
 }
-class _RegisterpageState extends State<RegisterPage>{
+class _RegisterpageState extends ConsumerState<RegisterPage>{
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -44,6 +46,7 @@ class _RegisterpageState extends State<RegisterPage>{
     var currWidth = (context)=> MediaQuery.of(context).size.width <= 768 ? 'SMALL' :
     MediaQuery.of(context).size.width <= 1024 ? 'MEDIUM' : 'LARGE';
     var isLandscape = (context) => MediaQuery.of(context).size.width > MediaQuery.of(context).size.height;
+    final registerData = ref.watch(registerDataNotifier);
 
     double determineRegisterFormHeight(BuildContext context) {
       double screenHeight = MediaQuery.of(context).size.height;
@@ -189,7 +192,7 @@ class _RegisterpageState extends State<RegisterPage>{
                                               String fullname = fullnameController.text.trim();
 
 
-                                              if (username.isEmpty || email.isEmpty || password.isEmpty || fullname.isEmpty) {
+                                              if (username.trim().isEmpty || email.trim().isEmpty || password.trim().isEmpty || fullname.trim().isEmpty) {
                                                 // Salah satu dari field input kosong, tampilkan Snackbar
                                                 final snackBar = SnackBar(
                                                   content: Text('Harap isi semua field input'),
@@ -207,10 +210,14 @@ class _RegisterpageState extends State<RegisterPage>{
                                                 // Semua field sudah diisi, panggil fungsi register
 
                                                 if(context.mounted){
-                                                  String res = await register(username, fullname, email, password, passwordConfirmation, context);
-                                                  if(res == 'SUCCESS'){
-                                                    Navigator.pushReplacementNamed(context, '/');
-                                                  }
+                                                  ref.read(registerDataNotifier.notifier).setRegisterData(
+                                                    RegisterData(username: username, password: password,
+                                                        confirmPassword: passwordConfirmation,
+                                                        fullName: fullname,
+                                                        profilePicture: '',
+                                                        email: email)
+                                                  );
+                                                  Navigator.pushNamed(context, '/register/set-photo');
                                                 }
                                                 passwordConfirmationController.text = '';
                                                 passwordController.text = '';

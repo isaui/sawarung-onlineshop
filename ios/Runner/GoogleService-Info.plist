@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyD4XHrPxIBsA4Nf0NJK-tLzH3WKSNtPSjU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>162707233969</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.bookingApp</string>
+	<key>PROJECT_ID</key>
+	<string>isa-citra-1691878861005</string>
+	<key>STORAGE_BUCKET</key>
+	<string>isa-citra-1691878861005.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:162707233969:ios:3015412900cda2e8999690</string>
+</dict>
+</plist>

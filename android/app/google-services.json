@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "162707233969",
+    "project_id": "isa-citra-1691878861005",
+    "storage_bucket": "isa-citra-1691878861005.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:162707233969:android:44629712831a8608999690",
+        "android_client_info": {
+          "package_name": "com.example.booking_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "162707233969-23sc32o6el2jgr9kc27rbqgkdg4jpiii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHbEAH0oRBVHMBkaZCvNWoRZkN8xnvB6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "162707233969-23sc32o6el2jgr9kc27rbqgkdg4jpiii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
