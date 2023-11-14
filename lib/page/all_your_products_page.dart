@@ -58,15 +58,22 @@ class _AllYourProductPage extends ConsumerState<AllYourProductPage>{
     final products = ref.watch(localItemsProvider);
     List<ShopItem>  productCards = products.entries
         .map((entry) => entry.value)
-        .toList();
+        .toList().reversed.toList();
     setResponsive();
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           Expanded(child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
               Flexible(
                 flex: 2,
                 fit: FlexFit.tight,

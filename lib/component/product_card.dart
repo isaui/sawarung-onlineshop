@@ -57,111 +57,115 @@ class ProductCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child:  Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AspectRatio(
-                aspectRatio: 0.8,
-                child: Image.network(
-                  shopItem.itemData['gambar'][0],
-                  fit: BoxFit.cover,
-                ),
+      child:Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AspectRatio(
+              aspectRatio: 0.9,
+              child: Image.network(
+                shopItem.itemData['gambar'][0],
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+            ),
+            Expanded(child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        shopItem.itemData['nama'],
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: getScreenSize(context) == ScreenSize.small? 1 : 2,
+                        style: TextStyle(
+                          fontSize: subtitleFontSize,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(shopItem.owner.profilePicture != null? shopItem.owner.profilePicture!.isNotEmpty?
+                            shopItem.owner.profilePicture!:  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png':
+                            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+                            radius: subtitleFontSize, // Sesuaikan dengan ukuran yang Anda inginkan
+                          ),
+                          SizedBox(width: 8), // Beri jarak antara gambar profil dan teks
+                          Flexible(
+                            child: Text(
+                              '${shopItem.owner.fullName}',
+                              maxLines: getScreenSize(context) == ScreenSize.small?1 : 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: contentFontSize,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ),
+
+                        ],
+
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8, top: 12, bottom: 12),
+                            child: Text(
+
+                              'Belum ada ulasan',
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: contentFontSize,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Spacer(),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      shopItem.itemData['nama'],
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: subtitleFontSize,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(shopItem.owner.profilePicture != null? shopItem.owner.profilePicture!.isNotEmpty?
-                              shopItem.owner.profilePicture!:  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png':
-                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-                          radius: subtitleFontSize, // Sesuaikan dengan ukuran yang Anda inginkan
-                        ),
-                        SizedBox(width: 8), // Beri jarak antara gambar profil dan teks
-                        Flexible(
-                          child: Text(
-                            '${shopItem.owner.fullName}',
-                            maxLines: getScreenSize(context) == ScreenSize.small?1 : 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: contentFontSize,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ),
+                    Padding(padding: EdgeInsets.all(8),
+                      child: Text(
 
-                      ],
-
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8, top: 12, bottom: 12),
-                          child: Text(
-
-                            'Belum ada ulasan',
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: contentFontSize,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
+                        'Rp ${shopItem.itemData['harga'].replaceAll(RegExp(r"(\.[0]*$)"), "")}',
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: Colors.indigoAccent.shade400,
+                          fontSize: subtitleFontSize,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    )
+                      ),),
+                    Padding(padding: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Spacer(),
+                            Text(
+
+                              '${formatTimeAgo(shopItem.itemData['created_at'])}',
+                              textAlign: TextAlign.right,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.grey.shade700,
+                                fontSize: contentFontSize,
+                              ),
+                            )
+                          ],
+                        ))
                   ],
-                ),
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(padding: EdgeInsets.all(8),
-                    child: Text(
+                )
+              ],
+            ))
 
-                      'Rp ${shopItem.itemData['harga'].replaceAll(RegExp(r"(\.[0]*$)"), "")}',
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.indigoAccent.shade400,
-                        fontSize: subtitleFontSize,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),),
-                  Padding(padding: EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Spacer(),
-                          Text(
-
-                            '${formatTimeAgo(shopItem.itemData['created_at'])}',
-                            textAlign: TextAlign.right,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontSize: contentFontSize,
-                            ),
-                          )
-                        ],
-                      ))
-                ],
-              )
-
-            ],
-          ),
+          ],
+        ),
     );
 
   }

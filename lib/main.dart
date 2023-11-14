@@ -6,6 +6,7 @@ import 'package:booking_app/page/all_your_products_page.dart';
 import 'package:booking_app/page/contents_page.dart';
 import 'package:booking_app/page/login_page.dart';
 import 'package:booking_app/page/register_page.dart';
+import 'package:booking_app/page/your_products_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,9 +44,9 @@ class _AppState extends ConsumerState {
           '/': (context) =>  LoginPage(updateSocketFunc: updateSocket,),
           '/register/set-photo': (context) => AddPhotoProfilePage(),
           '/register': (context) => const RegisterPage(),
-          '/app': (context) => AppPage(),
+          '/app': (context) => AppPage(key: UniqueKey(),),
           '/add-product': (context) => AddProductsPage(),
-          '/your-products': (context) => AllYourProductPage()
+          '/all-your-products': (context) => AllYourProductPage()
          },
       );
 }}

@@ -1,4 +1,5 @@
 import 'package:booking_app/api/add_product_api.dart';
+import 'package:booking_app/component/drawer.dart';
 import 'package:booking_app/component/mini_image_container.dart';
 import 'package:booking_app/api/upload.dart';
 import 'package:flutter/material.dart';
@@ -90,10 +91,32 @@ class _AddProductsPageState extends ConsumerState{
     return Scaffold(
       appBar: AppBar(
         title: Text('Tambah Produk Anda'),
+        automaticallyImplyLeading: false,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white), // Atur warna ikon hamburger
+              onPressed: () {
+                Navigator.of(context).pop(); // Tindakan ketika hamburger diklik
+              },
+            );
+          },
+        ),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.refresh, size: 28,))
+          IconButton(onPressed: (){}, icon: Icon(Icons.refresh, size: 28,)),
+          Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.menu, color: Colors.white), // Atur warna ikon hamburger
+                onPressed: () {
+                  Scaffold.of(context).openDrawer(); // Tindakan ketika hamburger diklik
+                },
+              );
+            },
+          ),
         ],
       ),
+      drawer: MyDrawer(),
       body: Container(
         width: double.infinity,
         child: Column(

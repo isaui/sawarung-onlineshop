@@ -51,12 +51,6 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
     _tabController = TabController(length: 2, vsync: this);
     // Ganti `length` dengan jumlah tab yang Anda miliki.
     _tabController.addListener(_handleTabSelection);
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if( !_isFetched){
-        firstFetchData();
-      }
-    });
-
   }
 
   @override
@@ -107,7 +101,8 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
     var myProduct = ref.watch(localItemsProvider);
     List<ShopItem>  productCards = myProduct.entries
         .map((entry) => entry.value)
-        .toList();
+        .toList().reversed.toList();
+    productCards = productCards.sublist(0,productCards.length > 6 ? 6 : productCards.length);
     setResponsive();
     print('ini username kamu: ');
     print(userData!.username);
@@ -201,7 +196,7 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
                                             // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            primary: Colors.blue, // Warna latar belakang tombol
+                                            backgroundColor: Colors.blue, // Warna latar belakang tombol
                                             padding: EdgeInsets.all(12), // Padding tombol
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(10), // Bentuk tombol dengan sudut melengkung
@@ -483,7 +478,7 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
 
                                  ElevatedButton(
                                    onPressed: () {
-                                     Navigator.of(context).pushNamed('/your-products');
+                                     Navigator.of(context).pushNamed('/all-your-products');
                                      final snackBar = SnackBar(
                                        content: const Text('Kamu telah menekan tombol Lihat Item'),
                                        backgroundColor: Colors.green,
