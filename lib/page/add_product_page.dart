@@ -80,7 +80,36 @@ class _AddProductsPageState extends ConsumerState{
           imageUrls, isForSale, ref);
       print(res);
       if(res == 'SUCCESS'){
+
         Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Contoh Dialog'),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Nama produk: ${productNameController.text}'),
+                    Text('Harga: ${priceController.text}'),
+                    Text('Deskripsi: ${descriptionController.text}'),
+                    Text('Stok: ${stockController.text}'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    // Tutup dialog
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Tutup'),
+                ),
+              ],
+            );
+          },
+        );
       }
     }
   }
