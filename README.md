@@ -6,6 +6,45 @@ Nama: Isa Citra Buana
 NPM: 2206081465
 Kelas: PBP D
 
+TUGAS 8
+1. Navigator.push akan menambahkan halaman yang dituju ke dalam navigation stack sehingga ketika halaman yang dituju itu di-pop, maka halaman yang sebelumnya akan ditampilkan sementara Navigator.pushReplacement juga menambahkan halaman yang akan dituju itu ke dalam navigation stack tetapi mengganti halaman saat ini dengan halaman yang akan dituju. 
+Contoh Navigator.push:
+``Navigator.of(context).push(MaterialPageRoute(builder: (context){
+   return AddProductsPage();
+   }));``
+Ketika kita berada di halaman utama dan kita ingin menambahkan produk, maka kita harus push ke halaman tambah produk karena kita pasti akan kembali ke halaman utama setelah membuat produk.
+Contoh Navigator.pushReplacement:
+``Navigator.of(context).push(MaterialPageRoute(builder:(context){
+return AppPage();
+}));``
+Ketika kita telah login dan berhasil diautentikasi, kita harus masuk ke konten aplikasi dan kita tidak berharap untuk kembali ke login page lagi.
+
+2. Ada 6.
+- Stack
+  memungkinkan penumpukan widget-child di atas satu sama lain. Widget dalam Stack ditempatkan relatif terhadap satu sama lain menggunakan properti-position-widget seperti Positioned. Biasanya stack digunakan ketika membuat Card, dalam hal ini memposisikan widget tertentu misalnya iconbutton yang isinya heart diletakkan di ujung kanan atas card dan tanggal posting produk pada ujung kanan bawah.
+- ListView
+  Menampilkan daftar elemen secara vertikal atau horizontal yang dapat di-scroll. Berguna ketika menampilkan daftar yang panjang atau dinamis yang memungkinkan penggunaan widget seperti ListView.builder untuk mengoptimalkan performa. Saya biasa menggunakan listview builder untuk menampilkan widget-widget tampilan daftar dari list yang berisi objek dari model yang sama.
+- GridView
+  Menyusun elemen dalam bentuk grid yang terdiri dari baris dan kolom. Memungkinkan untuk menampilkan anak widget dalam posisi yang terstruktur dan dapat di-scroll secara horizontal atau vertikal. Saya biasanya menggunakan GridView untuk menampilkan sekumpulan Card dari list yang berisi objek dari model yang sama.
+- Row
+  Menyusun child-widget secara horizontal dari kiri ke kanan. Berguna untuk menyusun elemen-elemen secara berdampingan.Salah satu penggunaannya adalah menyusun Post Card yang mana figunakan untuk menyusun button like, dislike, dan share.
+- Column
+  Menyusun widget-child secara vertikal dari atas ke bawah. Cocok digunakan untuk tata letak berlapis yang membutuhkan susunan elemen secara berurutan. Salah satu contoh penggunaannya adalah untuk menyusun formulir. Kita memerlukan column untuk menyusun textformfield-textformfield secara vertikal 
+- Wrap
+  Mengatur child-widget secara horizontal atau vertikal sesuai dengan ukuran layar dan jika ruang tidak cukup, secara otomatis melanjutkan ke baris atau kolom berikutnya. Berguna untuk menata elemen-elemen yang ukurannya bervariasi atau tidak diketahui secara dinamis.Saya biasanya menggunakan Wrap untuk menampilkan daftar pencarian terpopuler di search page, hal tersebut karena wrap bisa menyesuaikan posisi child-widget agar sesuai dengan sisa space yang tersedia di layar. Selain itu, panjang teks daftar pencarian juga tidak selalu sama sehingga cocok menggunakan Wrap untuk membungkus daftar pencarian-pencarian.
+3. TextFormField dengan type keyboard dan validasi tertentu untuk mendapatkan input string yang sesuai dari pengguna. Kemudian saya juga membuat custom widget untuk mengupload gambar, menampilkannya dan menghapusnya.
+
+4. Penerapan clean architecture pada aplikasi Flutter adalah mengorganisir kode pada folder-folder tertentu sesuai fungsinya masing-masing. 
+- File dart yang digunakan untuk membuat Model diletakkan di ``/models``
+- File dart yang digunakan untuk membuat page diletakkan di ``/page``
+- File dart yang berhubungan dengan HTTP Request ditempatkan di ``/api``
+- File dart yang digunakan untuk menginisialisasi dan mengatur provider ditempatkan di ``/provider``
+- File dart yang digunakan untuk membuat custom widget diletakkan di ``/component``
+- File dart yang digunakan untuk autentikasi dan authorisasi diletakkan di ``/auth``
+- File dart yang digunakan untuk utilitas diletakkan di ``/util``
+Dengan pengelompokkan file-file yang sesuai pada masing-masing tempatnya, kode menjadi lebih mudah dipahami. Hal ini membantu kita tidak hanya dalam proyek individu, tetapi dalam proyek kelompok.
+
+5.
 TUGAS 7
 1. Stateful widget adalah jenis widget yang memiliki state internal yang mana apabila data-data yang ada pada widget tersebut diubah di dalam  fungsi setState dan fungsi tersebut dijalankan maka widget ini akan merender ulang tampilannya termasuk tampilan anak-anak widgetnya.
 Hal ini berbeda dengan Stateless widget, yang mana jenis widget yang tidak memiliki state internal sehingga tampilannya selalu sama sejak widget itu dibuat tidak peduli data di dalam widget tersebut berubah atau tidak.

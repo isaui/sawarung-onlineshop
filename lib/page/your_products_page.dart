@@ -2,6 +2,7 @@ import 'package:booking_app/api/get_product_api.dart';
 import 'package:booking_app/auth/authentication.dart';
 import 'package:booking_app/models/responsive.dart';
 import 'package:booking_app/models/user.dart';
+import 'package:booking_app/page/add_product_page.dart';
 import 'package:booking_app/provider/items_provider.dart';
 import 'package:booking_app/provider/user_provider.dart';
 import 'package:booking_app/util/responsive.dart';
@@ -438,6 +439,7 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
                                  ElevatedButton(
                                    onPressed: () {
                                      Navigator.of(context).pushNamed('/add-product');
+
                                      final snackBar = SnackBar(
                                        content: const Text('Kamu telah menekan tombol Tambah Item'),
                                        backgroundColor: Colors.blue,
