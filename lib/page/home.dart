@@ -129,7 +129,7 @@ class _HomeState extends ConsumerState<Home>{
                                       SizedBox(height: 8,),
                                       Expanded(child: Row(
                                         children: [Flexible(child: Text('${shopItem.itemData['deskripsi']}', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,
-                                          fontSize: responsiveValue.contentFontSize, ), overflow: TextOverflow.clip, ),),],
+                                          fontSize: responsiveValue.contentFontSize, ), overflow: TextOverflow.ellipsis, ),),],
                                       ),),
                                       SizedBox(height: 8,),
                                       Spacer(),
