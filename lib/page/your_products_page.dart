@@ -42,7 +42,7 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
               itemData: productData['product'], owner: owner);
           items[item.itemId] = item;
       }
-      ref.read(localItemsProvider.notifier).setItems(items);
+      ref.read(shopItemProviders.notifier).setItems(items);
     }
     //ref.read(localItemsProvider);
   }
@@ -99,10 +99,10 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
   @override
   Widget build(BuildContext context) {
     var userData = ref.watch(userDataProvider);
-    var myProduct = ref.watch(localItemsProvider);
+    var myProduct = ref.watch(shopItemProviders);
     List<ShopItem>  productCards = myProduct.entries
         .map((entry) => entry.value)
-        .toList().reversed.toList();
+        .toList().reversed.where((element) => element.owner.id == userData!.id).toList();
     productCards = productCards.sublist(0,productCards.length > 6 ? 6 : productCards.length);
     setResponsive();
     print('ini username kamu: ');
@@ -137,7 +137,7 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     CircleAvatar(
-                                      radius: profilePictureSize,
+                                      radius: MediaQuery.of(context).size.width > 300 ? profilePictureSize : 40,
                                       backgroundImage: NetworkImage(
                                         userData!.profilePicture != null && !userData!.profilePicture!.isEmpty
                                             ? userData!.profilePicture!
@@ -344,7 +344,7 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
                                           Text('4.5', style: TextStyle(fontSize: subtitleFontSize, fontWeight: FontWeight.bold, color: Colors.grey.shade200)),
                                         ],),
                                       SizedBox(height: 4,),
-                                      Text('Dari 600 ulasan', style: TextStyle(fontSize: contentFontSize, fontWeight: FontWeight.normal, color: Colors.grey.shade200),)
+                                      Text('Dari 600 ulasan', textAlign: TextAlign.center, style: TextStyle(fontSize: contentFontSize, fontWeight: FontWeight.normal, color: Colors.grey.shade200),)
                                     ],
                                   )),
                                 ],
@@ -425,98 +425,111 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
                        padding: EdgeInsets.only(top: 10, bottom: 5, left: 20, right: 20),
                        child: SingleChildScrollView(
                          child: Column(
-                           mainAxisSize: MainAxisSize.min,
+                           mainAxisSize: MainAxisSize.max,
                            children: [
-                             Row(
-                               crossAxisAlignment: CrossAxisAlignment.center,
-                               mainAxisAlignment: MainAxisAlignment.end,
-                               children: [
-                                 Text('Your Product', style: TextStyle(
-                                     fontSize: titleFontSize,
-                                     fontWeight: FontWeight.bold
-                                 ),),
-                                 Spacer(),
-                                 ElevatedButton(
-                                   onPressed: () {
-                                     Navigator.of(context).pushNamed('/add-product');
+                             LayoutBuilder(builder: (context,constraints){
+                               return Container(
+                                  width: constraints.maxWidth,
+                                   child:Wrap(
+                                     direction: Axis.horizontal,
+                                     crossAxisAlignment: WrapCrossAlignment.center,
+                                     alignment: WrapAlignment.spaceBetween,
+                                     runSpacing: 8,
+                                     children: [
+                                       Text('Your Product', style: TextStyle(
+                                           fontSize: titleFontSize,
+                                           fontWeight: FontWeight.bold
+                                       ),),
+                                       SizedBox(width: 8,),
+                                       Container(child: Row(
+                                         mainAxisSize: MainAxisSize.min,
+                                         crossAxisAlignment: CrossAxisAlignment.center,
+                                         children: [
+                                           ElevatedButton(
+                                             onPressed: () {
+                                               Navigator.of(context).pushNamed('/add-product');
 
-                                     final snackBar = SnackBar(
-                                       content: const Text('Kamu telah menekan tombol Tambah Item'),
-                                       backgroundColor: Colors.blue,
-                                       behavior: SnackBarBehavior.floating,
-                                       action: SnackBarAction(
-                                         label: 'Tutup',
-                                         textColor: Colors.white,
-                                         onPressed: () {
-                                           // Tindakan yang akan diambil ketika tombol "Tutup" pada Snackbar ditekan.
-                                         },
-
-
-                                       ),
-                                     );
-                                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                     // Tambahkan aksi yang ingin dilakukan saat tombol "Tambah" ditekan
-
-                                   },
-                                   style: ElevatedButton.styleFrom(
-                                     primary: Colors.blue, // Warna latar belakang tombol "Tambah"
-                                     padding: EdgeInsets.all(8), // Padding tombol
-                                     shape: RoundedRectangleBorder(
-                                       borderRadius: BorderRadius.circular(5), // Bentuk tombol dengan sudut melengkung
-                                     ),
-                                   ),
-                                   child: Text(
-                                     'Tambah Item',
-                                     style: TextStyle(
-                                       fontSize: subtitleFontSize, // Ukuran teks
-                                       color: Colors.white, // Warna teks
-                                       fontWeight: FontWeight.bold, // Gaya teks
-                                     ),
-                                   ),
-                                 ),
-                                 SizedBox(
-                                   width: 8,
-                                 ),
-
-                                 ElevatedButton(
-                                   onPressed: () {
-                                     Navigator.of(context).pushNamed('/all-your-products');
-                                     final snackBar = SnackBar(
-                                       content: const Text('Kamu telah menekan tombol Lihat Item'),
-                                       backgroundColor: Colors.green,
-                                       behavior: SnackBarBehavior.floating,
-                                       action: SnackBarAction(
-                                         label: 'Tutup',
-                                         textColor: Colors.white,
-                                         onPressed: () {
-
-                                           // Tindakan yang akan diambil ketika tombol "Tutup" pada Snackbar ditekan.
-                                         },
+                                               final snackBar = SnackBar(
+                                                 content: const Text('Kamu telah menekan tombol Tambah Item'),
+                                                 backgroundColor: Colors.blue,
+                                                 behavior: SnackBarBehavior.floating,
+                                                 action: SnackBarAction(
+                                                   label: 'Tutup',
+                                                   textColor: Colors.white,
+                                                   onPressed: () {
+                                                     // Tindakan yang akan diambil ketika tombol "Tutup" pada Snackbar ditekan.
+                                                   },
 
 
-                                       ),
-                                     );
-                                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                     // Tambahkan aksi yang ingin dilakukan saat tombol "Lihat Semua Daftar Produk" ditekan
-                                   },
-                                   style: ElevatedButton.styleFrom(
-                                     primary: Colors.green, // Warna latar belakang tombol "Lihat Semua Daftar Produk"
-                                     padding: EdgeInsets.all(8), // Padding tombol
-                                     shape: RoundedRectangleBorder(
-                                       borderRadius: BorderRadius.circular(5), // Bentuk tombol dengan sudut melengkung
-                                     ),
-                                   ),
-                                   child: Text(
-                                     'Lihat Item',
-                                     style: TextStyle(
-                                       fontSize: subtitleFontSize, // Ukuran teks
-                                       color: Colors.white, // Warna teks
-                                       fontWeight: FontWeight.bold, // Gaya teks
-                                     ),
-                                   ),
-                                 )
-                               ],
-                             ),
+                                                 ),
+                                               );
+                                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                               // Tambahkan aksi yang ingin dilakukan saat tombol "Tambah" ditekan
+
+                                             },
+                                             style: ElevatedButton.styleFrom(
+                                               primary: Colors.blue, // Warna latar belakang tombol "Tambah"
+                                               padding: EdgeInsets.all(8), // Padding tombol
+                                               shape: RoundedRectangleBorder(
+                                                 borderRadius: BorderRadius.circular(5), // Bentuk tombol dengan sudut melengkung
+                                               ),
+                                             ),
+                                             child: Text(
+                                               'Tambah Item',
+                                               style: TextStyle(
+                                                 fontSize: subtitleFontSize, // Ukuran teks
+                                                 color: Colors.white, // Warna teks
+                                                 fontWeight: FontWeight.bold, // Gaya teks
+                                               ),
+                                             ),
+                                           ),
+                                           SizedBox(
+                                             width: 8,
+                                           ),
+
+                                           ElevatedButton(
+                                             onPressed: () {
+                                               Navigator.of(context).pushNamed('/all-your-products');
+                                               final snackBar = SnackBar(
+                                                 content: const Text('Kamu telah menekan tombol Lihat Item'),
+                                                 backgroundColor: Colors.green,
+                                                 behavior: SnackBarBehavior.floating,
+                                                 action: SnackBarAction(
+                                                   label: 'Tutup',
+                                                   textColor: Colors.white,
+                                                   onPressed: () {
+
+                                                     // Tindakan yang akan diambil ketika tombol "Tutup" pada Snackbar ditekan.
+                                                   },
+
+
+                                                 ),
+                                               );
+                                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                               // Tambahkan aksi yang ingin dilakukan saat tombol "Lihat Semua Daftar Produk" ditekan
+                                             },
+                                             style: ElevatedButton.styleFrom(
+                                               primary: Colors.green, // Warna latar belakang tombol "Lihat Semua Daftar Produk"
+                                               padding: EdgeInsets.all(8), // Padding tombol
+                                               shape: RoundedRectangleBorder(
+                                                 borderRadius: BorderRadius.circular(5), // Bentuk tombol dengan sudut melengkung
+                                               ),
+                                             ),
+                                             child: Text(
+                                               'Lihat Item',
+                                               style: TextStyle(
+                                                 fontSize: subtitleFontSize, // Ukuran teks
+                                                 color: Colors.white, // Warna teks
+                                                 fontWeight: FontWeight.bold, // Gaya teks
+                                               ),
+                                             ),
+                                           )
+                                         ],
+                                       ))
+                                     ],
+                                   ));
+
+                             }),
                              SizedBox(height:20),
                              productCards.length != 0 ?GridView.builder(
                                shrinkWrap: true,

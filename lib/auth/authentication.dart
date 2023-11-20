@@ -7,7 +7,7 @@ import 'package:booking_app/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
-const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'https://sawarungdjangoapi-production.up.railway.app';
 
 Future<String?> logout(WidgetRef ref, context) async {
   final auth = ref.watch(authNotifierProvider);

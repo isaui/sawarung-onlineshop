@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:booking_app/provider/auth_provider.dart';
 import 'package:uuid/uuid.dart';
-const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'https://sawarungdjangoapi-production.up.railway.app';
 
 Future<Map<String, dynamic>> getProducts(WidgetRef ref) async {
   final url = Uri.parse('$baseUrl/products/get-products/');

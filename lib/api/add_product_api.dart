@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:booking_app/provider/auth_provider.dart';
 import 'package:uuid/uuid.dart';
-const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'https://sawarungdjangoapi-production.up.railway.app';
 
 Future<String> addProduct(String nama, int harga, int stok,
 String deskripsi, List<String> kategori, List<String> gambar, bool forSale, WidgetRef ref) async{

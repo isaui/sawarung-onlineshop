@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:booking_app/component/drawer.dart';
+import 'package:booking_app/page/home.dart';
 import 'package:booking_app/page/your_products_page.dart';
 import 'package:booking_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,7 @@ class _AppPageState extends ConsumerState<AppPage> {
             itemData: productData['product'], owner: owner);
         items[item.itemId] = item;
       }
-      ref.read(localItemsProvider.notifier).setItems(items);
+      ref.read(shopItemProviders.notifier).setItems(items);
       _firstFetched = true;
     }
     //ref.read(localItemsProvider);
@@ -133,6 +134,11 @@ class _AppPageState extends ConsumerState<AppPage> {
             );
           },
         ),
+        actions: [
+          if(_selectedIndex == 0)IconButton(onPressed: (){}, icon: Icon(Icons.search_outlined, color: Colors.black,),),
+          if(_selectedIndex == 0)IconButton(onPressed: (){}, icon: Icon(Icons.shopping_cart_outlined, color: Colors.black,),),
+          if(_selectedIndex == 0)IconButton(onPressed: (){}, icon: Icon(Icons.settings, color: Colors.black,),),
+        ],
       ),
       drawer: MyDrawer(),
       body: PageView(
@@ -143,9 +149,7 @@ class _AppPageState extends ConsumerState<AppPage> {
           });
         },
         children: <Widget>[
-          Center(
-            child: Text('Belum Dibuat'),
-          ),
+          Home(),
           Center(
             child: Text('Belum dibuat 2'),
           ),

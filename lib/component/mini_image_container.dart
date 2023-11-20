@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:booking_app/component/mini_image.dart';
 import 'package:flutter/material.dart';
 

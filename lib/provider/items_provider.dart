@@ -32,9 +32,7 @@ class ShopItemsNotifier extends StateNotifier<Map<String, ShopItem>> {
     state = newState;
   }
 }
-final shopItemsProvider = StateNotifierProvider<ShopItemsNotifier, Map<String, ShopItem>>((ref) {
-  return ShopItemsNotifier({});
-});
-final localItemsProvider = StateNotifierProvider<ShopItemsNotifier, Map<String, ShopItem>>((ref) {
+
+final shopItemProviders = StateNotifierProvider<ShopItemsNotifier, Map<String, ShopItem>>((ref) {
   return ShopItemsNotifier({});
 });

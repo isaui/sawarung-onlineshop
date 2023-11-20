@@ -1,5 +1,6 @@
 import 'package:booking_app/models/responsive.dart';
 import 'package:booking_app/provider/items_provider.dart';
+import 'package:booking_app/provider/user_provider.dart';
 import 'package:booking_app/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,10 +56,11 @@ class _AllYourProductPage extends ConsumerState<AllYourProductPage>{
   }
   @override
   Widget build(BuildContext context) {
-    final products = ref.watch(localItemsProvider);
+    final products = ref.watch(shopItemProviders);
+    final userData = ref.watch(userDataProvider);
     List<ShopItem>  productCards = products.entries
         .map((entry) => entry.value)
-        .toList().reversed.toList();
+        .toList().reversed.where((element) => element.owner.id == userData!.id ).toList();
     setResponsive();
     // TODO: implement build
     return Scaffold(
