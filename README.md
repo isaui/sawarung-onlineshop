@@ -6,6 +6,746 @@ Nama: Isa Citra Buana
 NPM: 2206081465
 Kelas: PBP D
 
+TUGAS 9
+1. Bisa. Akan tetapi, pengambilan data json tanpa memanfaatkan model itu tidak efisien.
+2. CookieRequest menyimpan status autentikasi berupa token. CookieRequest perlu dibagikan ke seluruh komponen flutter untuk memastikan pengguna telah terautentikasi dan agar bisa mengakses status autentikasi tersebut.
+3. 
+- Fetch dari API
+- Decode response.body
+- Seleksi data json yang kemudian dikonversi jadi model dengan <nama-kelas-model>.fromJson
+4. Kalau versi saya:
+- Input username dan password divalidasi secara klien
+- Apabila berhasil maka masukkan input-input tersebut ke dalam suatu map
+- Map tersebut di-json encode.
+- Buat permintaan HTTPRequest berupa POST dengan body map yang telah di-json encode tersebut
+- Di sisi server(Django), perlu dilakukan decode (json.loads) pada body request yang dikirimkan dari FLutter
+- Setelah itu, ambil field username dan password  dan autentikasikan dalam Django
+- Buat web-token dan kirimkan webtoken tersebut dalam JsonResponse
+- Di klien, simpan token tersebut, kirim permintaan request lagi dengan menggunakan token tersebut sebagai header atau dimasukkan ke body, dapatkan data user melalui token dan kirim JsonResponse yang berisi data user.
+- Navigasi ke menu dan perbarui state aplikasi
+5. 
+Widget-widget yang diperlukan:
+- Snackbar itu  digunakan untuk menampilkan pesan sementara atau notifikasi kecil di bagian bawah layar.
+- ElevatedButton digunakan untuk membuat tombol yang memiliki efek kenaikan (elevated) ketika ditekan.
+- Column itu widget yang digunakan untuk mengatur anak-anak widget dalam satu garis vertikal(kolom).
+- Scaffold itu digunakan sebagai kerangka utama untuk aplikasi Flutter. Fungsinya menyediakan tata letak umum untuk tampilan aplikasi, termasuk AppBar, Drawer, Floating Action Button, dan lain-lain.
+- Text untuk menampilkan teks
+- Container itu untuk membungkus anak widget dan menerapkan margin, padding, maupun decoration
+- Center itu untuk meletakkan anak widget di tengah
+- Card untuk membuat kartu produk
+- GestureDetector untuk mendeteksi interaksi pengguna dan meresponnn apa yang akan dilakukan selanjutnya
+- CarouselSlider untuk membuat carousel
+- ClipRRect untuk membuat rounded rectangle
+- Expanded dan Flexible untuk mengisi kekosongan pada layar
+6. 
+- Buat halaman login dan register. Buat fungsi login dan fungsi register. Dalam kedua fungsi tersebut, masing-masing tembak endpoint django yang mengurus login dan register.
+- Di django, buat sistem autentikasi berbasis django rest token.
+- Buat model ShopItem dan UserData.
+- Buat widget Product Card atau semacamnya, seperti ini:
+```
+import 'package:booking_app/page/product_detail_page.dart';
+import 'package:booking_app/util/time.dart';
+import 'package:flutter/material.dart';
+import 'package:booking_app/models/shop_item.dart';
+
+import '../models/responsive.dart';
+import '../util/responsive.dart';
+class ProductCard extends StatelessWidget {
+  final ShopItem shopItem;
+   ProductCard({
+     required this.shopItem,
+  });
+  double titleFontSize = TextSize.BASE.fontSize;
+  double subtitleFontSize = TextSize.SM.fontSize;
+  double contentFontSize = TextSize.XS.fontSize;
+  double profilePictureSize = 30;
+  double appBarHeight = 200;
+  double kDistance = 12;
+  double profileDistance = 20;
+
+  void setResponsive(context){
+    final screenSize = getScreenSize(context);
+    if(screenSize == ScreenSize.small){
+      titleFontSize = TextSize.BASE.fontSize;
+      subtitleFontSize = TextSize.SM.fontSize;
+      contentFontSize = TextSize.XS.fontSize;
+      profilePictureSize = 70;
+      appBarHeight = 300;
+      kDistance = 12;
+      profileDistance = 20;
+    }
+    else if(screenSize == ScreenSize.medium){
+      titleFontSize = TextSize.MD.fontSize;
+      subtitleFontSize = TextSize.BASE.fontSize;
+      contentFontSize = TextSize.SM.fontSize;
+      profilePictureSize = 90;
+      appBarHeight = 280;
+      kDistance = 16;
+      profileDistance = 40;
+    }
+    else{
+      titleFontSize = TextSize.LG.fontSize;
+      subtitleFontSize = TextSize.MD.fontSize;
+      contentFontSize = TextSize.BASE.fontSize;
+      profilePictureSize = 100;
+      appBarHeight = 340;
+      kDistance = 20;
+      profileDistance = 60;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setResponsive(context);
+    return Card(
+      color: Colors.white70,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child:GestureDetector(
+        onTap: (){
+          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+            return ProductDetailPage(productId: shopItem.itemId,);
+          }));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+           Stack(
+             children: [
+               AspectRatio(
+                 aspectRatio: 0.98,
+                 child: Image.network(
+                   shopItem.itemData['gambar'][0],
+                   fit: BoxFit.cover,
+                 ),
+               ),
+               Positioned(
+                   left: 8,
+                   top: 8,
+                   child: Container(
+                     padding: EdgeInsets.all(4),
+                     decoration: BoxDecoration(
+                       color: Colors.indigoAccent.shade400,
+                       borderRadius: BorderRadius.circular(5),
+
+                     ),
+                     child: Align(
+                       child: Text('${shopItem.itemData['dijual']? 'For Sale' : 'Not For Sale'}',
+                         style: TextStyle(
+                             color: Colors.white
+                         ),),
+                     ),
+                   ))
+             ],
+           ),
+            Expanded(child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          shopItem.itemData['nama'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: getScreenSize(context) == ScreenSize.small? 1 : 2,
+                          style: TextStyle(
+                            fontSize: subtitleFontSize,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(shopItem.owner.profilePicture != null? shopItem.owner.profilePicture!.isNotEmpty?
+                              shopItem.owner.profilePicture!:  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png':
+                              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+                              radius: subtitleFontSize, // Sesuaikan dengan ukuran yang Anda inginkan
+                            ),
+                            SizedBox(width: 8), // Beri jarak antara gambar profil dan teks
+                            Flexible(
+                              child: Text(
+                                '${shopItem.owner.fullName}',
+                                maxLines: getScreenSize(context) == ScreenSize.small?1 : 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: contentFontSize,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                            ),
+
+                          ],
+
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8, top: 12, bottom: 12),
+                              child: Text(
+
+                                'Belum ada ulasan',
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: contentFontSize,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+
+                          'Rp ${shopItem.itemData['harga'].replaceAll(RegExp(r"(\.[0]*$)"), "")}',
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.indigoAccent.shade400,
+                            fontSize: subtitleFontSize,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),),
+                      SizedBox(height: 4,),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Spacer(),
+                              Text(
+
+                                '${formatTimeAgo(shopItem.itemData['created_at'])}',
+                                textAlign: TextAlign.right,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.grey.shade700,
+                                  fontSize: contentFontSize,
+                                ),
+                              )
+                            ],
+                          ))
+                    ],
+                  )
+                ],
+              ),
+            ))
+
+          ],
+        ),
+      ),
+    );
+
+  }
+}
+```
+- Kita perlu memwrap Product Card tersebut dengan GestureDetector dengan parameter ontap yang isinya fungsi untuk navigasi ke halaman detail produk.
+- Membuat halaman Detail Produk seperti ini:
+```
+import 'package:booking_app/component/expandable_text.dart';
+import 'package:booking_app/component/product_appbar.dart';
+import 'package:booking_app/component/product_card.dart';
+import 'package:booking_app/component/product_mini_image_container.dart';
+import 'package:booking_app/component/review_widget.dart';
+import 'package:booking_app/models/responsive.dart';
+import 'package:booking_app/models/shop_item.dart';
+import 'package:booking_app/provider/items_provider.dart';
+import 'package:booking_app/util/responsive.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
+
+class ProductDetailPage extends ConsumerStatefulWidget{
+  final String productId;
+  ProductDetailPage({required this.productId});
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    // TODO: implement createState
+    return _ProductDetailPageState();
+  }
+}
+class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
+
+  final responsiveValue = ResponsiveValue();
+  int _currentIndex = 0;
+  CarouselController controller = CarouselController();
+  bool _isColoredAppBar = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final productId = widget.productId;
+    final items = ref.watch(shopItemProviders);
+    final pickItem = items[productId];
+    final anotherItems = items.entries
+        .map((entry) => entry.value)
+        .toList().reversed.where((element) => element.owner.id == pickItem!.owner.id && element.itemId != pickItem!.itemId ).toList();
+    final anotherPickedItems = anotherItems.sublist(0, anotherItems.length < 6 ? anotherItems.length : 6);
+
+    double _carouselHeight = getScreenSize(context) == ScreenSize.small ?250 :
+    getScreenSize(context) == ScreenSize.medium ? 280 :300;
+
+    print(pickItem!.itemData['gambar']);
+    responsiveValue.setResponsive(context);
+    // TODO: implement build
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: ProductAppBar(changeColor:_isColoredAppBar),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              IconButton(onPressed: (){}, icon: Icon(Icons.chat_rounded, color: Colors.blue,)),
+              SizedBox(width: 8,),
+              Expanded(child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.all(8) ,
+                    side: BorderSide(color: Colors.blue),),
+                onPressed: (){},
+                child: Text('Beli', style: TextStyle(color: Colors.blue, fontSize: responsiveValue.subtitleFontSize),),
+              )),
+              SizedBox(width: 8,),
+              Expanded(child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(8)
+                ),
+                onPressed: (){},
+                child: Text('+ Keranjang', style: TextStyle(color: Colors.white, fontSize: responsiveValue.subtitleFontSize),),
+
+              ),
+              ),
+              SizedBox(width: 8,),
+
+            ],
+          ),
+        ),
+      ),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification is ScrollUpdateNotification &&
+              scrollNotification.metrics.axis == Axis.vertical) {
+            // Hitung posisi scroll terkini
+            final pixels = scrollNotification.metrics.pixels;
+
+            // Cek apakah Carousel sudah terscroll keluar layar
+            setState(() {
+              _isColoredAppBar = pixels >= _carouselHeight;
+            });
+          }
+          return false;
+        },
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+                child: Stack(
+                  children: [
+                    CarouselSlider(
+                      carouselController: controller,
+                      options: CarouselOptions(
+                          viewportFraction: 1,
+                          height: getScreenSize(context) == ScreenSize.small ?250 :
+                          getScreenSize(context) == ScreenSize.medium ? 280 :300 ,
+                          onPageChanged: (index, reason){
+                            setState(() {
+                              _currentIndex = index;
+                            });
+                          }
+
+                      ),
+                      items: [
+                        ...pickItem!.itemData['gambar'].map((image){
+                          return Container(
+                              color: Colors.black,
+                              child: Align(
+                                  child: AspectRatio(
+                                    aspectRatio: 4/4,
+                                    child: Image.network(image, fit: BoxFit.cover,),
+                                  )
+                              )
+                          );
+                        }).toList()
+                      ],
+                    ),
+                    Positioned(
+                        right: 8,
+                        bottom: 8,
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.indigoAccent.shade400,
+                            borderRadius: BorderRadius.circular(5),
+
+                          ),
+                          child: Align(
+                            child: Text('${pickItem!.itemData['dijual']? 'For Sale' : 'Not For Sale'}',
+                              style: TextStyle(
+                                  color: Colors.white
+                              ),),
+                          ),
+                        )),
+                    Positioned(
+                        left: 8,
+                        bottom: 8,
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.indigoAccent.shade400,
+                            borderRadius: BorderRadius.circular(5),
+
+                          ),
+                          child: Align(
+                            child: Text('${_currentIndex+1}/${pickItem.itemData['gambar'].length}',
+                              style: TextStyle(
+                                  color: Colors.white
+                              ),),
+                          ),
+                        ))
+                  ],
+                )
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${pickItem!.itemData['nama']}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: responsiveValue.titleFontSize,
+                                  fontWeight: FontWeight.bold
+
+                              ),
+
+                            ),
+                            SizedBox(height: 4,),
+                            Text('Rp${pickItem!.itemData['harga'].replaceAll(RegExp(r"(\.[0]*$)"), "")}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.indigoAccent.shade400,
+                                fontSize: responsiveValue.extraTitleFontSize,
+                                fontWeight: FontWeight.bold,
+                              ),
+
+                            ),
+                          ],
+                        )),
+                        SizedBox(width: 8,),
+                        IconButton(onPressed: (){}, icon: Icon(Icons.favorite, color: Colors.grey.shade400, size:
+                        responsiveValue.titleFontSize + 12,))
+                      ],
+                    ),
+                    SizedBox(height: 4,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('Belum Terjual', style: TextStyle(
+                            fontSize: responsiveValue.contentFontSize
+                        ),),
+                        SizedBox(width: 8,),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: Colors.indigoAccent
+                              )
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                          child: Align(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.star, color: Colors.yellow,),
+                                  Text('4.8', style: TextStyle(fontSize: responsiveValue.contentFontSize),),
+                                  Text(' (105)', style: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontSize: responsiveValue.contentFontSize
+                                  ),),
+
+                                ],
+                              )
+                          ),
+                        ),
+                        SizedBox(width: 8,),
+                        if(MediaQuery.of(context).size.width > 300 ) Builder(builder: (context){
+                          int stock = int.tryParse(pickItem!.itemData['stok'] ?? '0') ?? 0;
+
+                          return  Text(
+                            'Sisa $stock stok ${stock > 20 ? '' : 'aja!'}',
+                            softWrap: true,
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(
+                              fontSize: responsiveValue.contentFontSize,
+                            ),
+                          );
+                        })
+                      ],
+                    ),
+                    if(MediaQuery.of(context).size.width <= 300)Builder(builder: (context){
+                      int stock = int.tryParse(pickItem!.itemData['stok'] ?? '0') ?? 0;
+
+                      return  Container(
+                        padding: EdgeInsets.only(top: 4),
+                        child: Text(
+                          'Sisa $stock stok ${stock > 20 ? '' : 'aja!'}',
+                          softWrap: true,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontSize: responsiveValue.contentFontSize,
+                          ),
+                        ),
+                      );
+                    }),
+                    SizedBox(height: 8,),
+                    Text('Gambar', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                        fontSize: responsiveValue.titleFontSize),),
+                    SizedBox(height: 4,),
+                    LayoutBuilder(builder: (context,constraint){
+                      return Container(
+                        height: 120,
+                        width: constraint.maxWidth,
+                        child: ProductMiniImageContainer(currIndex: _currentIndex, function: (index){
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                          controller.animateToPage(index);
+                        }, imagesData: pickItem!.itemData['gambar'].cast<String>())
+                        ,
+                      );
+                    }),
+                    SizedBox(height: 8,),
+                    Text('Deskripsi', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                        fontSize: responsiveValue.titleFontSize),),
+                    SizedBox(height: 4,),
+                    ExpandableDescription(text: pickItem!.itemData['deskripsi'], maxLines: 5,),
+                    SizedBox(height: 8,),
+                    Text('Kategori', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                        fontSize: responsiveValue.titleFontSize),),
+                    SizedBox(height: 4,),
+                    Wrap(
+                      alignment: WrapAlignment.start,
+                      spacing: 4,
+                      runSpacing: 6,
+                      children: [
+                        ...pickItem!.itemData['kategori'].cast<String>().map((kategori){
+                          return ElevatedButton(onPressed: (){}, child: Text('$kategori'));
+                        }).toList()
+                      ],
+                    ),
+
+                    SizedBox(height: 8,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('Review', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                            fontSize: responsiveValue.titleFontSize),),
+                        Text('Show All', textAlign: TextAlign.left, style: TextStyle(color: Colors.black,
+                            fontSize: responsiveValue.subtitleFontSize),),
+                      ],
+                    ),
+                    SizedBox(height: 4,),
+                    ReviewsWidget(),
+                    SizedBox(height: 8,),
+                    Text('Penjual', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                        fontSize: responsiveValue.titleFontSize),),
+                    SizedBox(height: 4,),
+                    Container(
+                      child: LayoutBuilder(
+                        builder: (context, constraints){
+                          return Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.indigoAccent.shade400)
+                              ),
+                              padding: EdgeInsets.all(8),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:  MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: MediaQuery.of(context).size.width > 300 ? responsiveValue.profilePictureSize : 40,
+                                        backgroundImage: NetworkImage(
+                                          pickItem!.owner.profilePicture != null && !pickItem!.owner!.profilePicture!.isEmpty
+                                              ? pickItem!.owner!.profilePicture!
+                                              : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                                        ),
+                                      ),
+
+                                      Padding(padding: EdgeInsets.symmetric(horizontal: 20)),
+                                      Flexible(
+                                          fit: FlexFit.loose,
+                                          child: Container(
+
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  pickItem!.owner.fullName!,
+                                                  softWrap: false, // Tidak akan ada pemisahan baris
+                                                  overflow: TextOverflow.ellipsis, // Teks yang tidak muat akan ditampilkan dengan ellipsis (...)
+                                                  style: TextStyle(
+                                                    fontSize: responsiveValue.titleFontSize, // Ukuran nama lengkap
+                                                    fontWeight: FontWeight.bold, // Gaya teks nama lengkap
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8), // Jarak antara nama lengkap dan username
+                                                Text(
+                                                  pickItem!.owner.username!,
+                                                  style: TextStyle(
+                                                    fontSize: responsiveValue.subtitleFontSize, // Ukuran username
+                                                    fontWeight: FontWeight.normal,
+
+                                                  ),
+                                                  softWrap: false, // Tidak akan ada pemisahan baris
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 4,),
+                                                Text(
+                                                  pickItem!.owner.email!,
+                                                  style: TextStyle(
+                                                    fontSize: responsiveValue.subtitleFontSize, // Ukuran email
+                                                    fontWeight: FontWeight.normal,
+
+                                                  ),
+                                                  maxLines: 2, // Tidak akan ada pemisahan baris
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                      if(getScreenSize(context) != ScreenSize.small) Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.blue, // Warna latar belakang tombol
+                                              padding: EdgeInsets.all(12), // Padding tombol
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10), // Bentuk tombol dengan sudut melengkung
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'Visit Profile',
+                                              style: TextStyle(
+                                                fontSize: responsiveValue.subtitleFontSize, // Ukuran teks
+                                                color: Colors.white, // Warna teks
+                                                fontWeight: FontWeight.bold, // Gaya teks
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: responsiveValue.kDistance,),
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+                                  SizedBox(height: responsiveValue.kDistance * 2),
+                                  if(getScreenSize(context) == ScreenSize.small) Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.blue, // Warna latar belakang tombol
+                                          padding: EdgeInsets.all(12), // Padding tombol
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10), // Bentuk tombol dengan sudut melengkung
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Visit Profile',
+                                          style: TextStyle(
+                                            fontSize: responsiveValue.subtitleFontSize, // Ukuran teks
+                                            color: Colors.white, // Warna teks
+                                            fontWeight: FontWeight.bold, // Gaya teks
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: responsiveValue.kDistance,),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8,),
+                                  if(anotherPickedItems.length > 0) Divider(thickness: 1, color: Colors.indigoAccent,),
+                                  if(anotherPickedItems.length > 0)Text('Produk lain dari penjual ini', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                                      fontSize: responsiveValue.subtitleFontSize),),
+                                  if(anotherPickedItems.length > 0)SizedBox(height: 8,),
+                                  if(anotherPickedItems.length > 0)LayoutBuilder(builder: (ctx, cs){
+                                    return SizedBox(
+                                      width: cs.maxWidth,
+                                      height: (getScreenSize(context) == ScreenSize.small? 200 :
+                                      getScreenSize(context)  == ScreenSize.medium? 220 : 240) *2 + 25,
+                                      child: anotherPickedItems.length > 0 ? ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        physics: ScrollPhysics(),
+                                        itemCount: anotherPickedItems.length ,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return SizedBox(
+                                            width: getScreenSize(context) == ScreenSize.small? 200 :
+                                            getScreenSize(context)  == ScreenSize.medium? 220 : 240,
+                                            child: ProductCard(shopItem: anotherPickedItems[index]),
+                                          );
+                                        },
+                                      ) : Center(
+                                        child:
+                                        Text('Tidak ada barang lain dari seller ini', textAlign: TextAlign.left, style: TextStyle(color: Colors.black,
+                                            fontSize: responsiveValue.contentFontSize),),
+                                      ),
+                                    );
+                                  })
+                                ],
+                              )
+                          );
+                        },
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+
+          ],
+        ),
+      )
+    );
+  }
+}
+```
+
 TUGAS 8
 1. Navigator.push akan menambahkan halaman yang dituju ke dalam navigation stack sehingga ketika halaman yang dituju itu di-pop, maka halaman yang sebelumnya akan ditampilkan sementara Navigator.pushReplacement juga menambahkan halaman yang akan dituju itu ke dalam navigation stack tetapi mengganti halaman saat ini dengan halaman yang akan dituju. 
 Contoh Navigator.push:

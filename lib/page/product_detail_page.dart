@@ -444,6 +444,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                                     ],
                                   ),
                                   SizedBox(height: 8,),
+                                  if(anotherPickedItems.length > 0) Divider(thickness: 1, color: Colors.indigoAccent,),
                                   if(anotherPickedItems.length > 0)Text('Produk lain dari penjual ini', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                                       fontSize: responsiveValue.subtitleFontSize),),
                                   if(anotherPickedItems.length > 0)SizedBox(height: 8,),

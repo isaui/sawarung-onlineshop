@@ -533,6 +533,7 @@ class _MyProductPageState extends ConsumerState<MyProductPage> with TickerProvid
                              SizedBox(height:20),
                              productCards.length != 0 ?GridView.builder(
                                shrinkWrap: true,
+                               physics: NeverScrollableScrollPhysics(),
                                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                  maxCrossAxisExtent: 300,
                                  crossAxisSpacing: 10,

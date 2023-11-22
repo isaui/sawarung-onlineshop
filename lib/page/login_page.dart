@@ -37,7 +37,6 @@ class _LoginPageState extends ConsumerState<LoginPage>{
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: 50,),
               Padding(
@@ -51,21 +50,21 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                         ]
                     ),
                   ),
-              Expanded(
-                  flex: 4,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50))
-                    ),
-                    child: Padding(
+              Expanded(child:
+                 Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50))
+                  ),
+                  child: SingleChildScrollView(
+                    child: Container(
                       padding: EdgeInsets.all(20),
                       child: Column(
                         children: [
                           SizedBox(height: 40,),
                           Container(
                               child: Column(
-                                mainAxisSize: MainAxisSize.min,
+                                mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Container(
                                       child: CstInput(
@@ -92,7 +91,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                                       children: [
                                         Text('Belum punya akun?', style: TextStyle(fontSize: 12),),
                                         TextButton(onPressed: (){
-                                        Navigator.pushNamed(context, '/register');
+                                          Navigator.pushNamed(context, '/register');
                                         },child: Text('Register', style:TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.blue)),)
                                       ],
                                     ),
@@ -100,60 +99,64 @@ class _LoginPageState extends ConsumerState<LoginPage>{
 
                                 ],
                               )
-                          ),
-                          Expanded(child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 8),
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      String username = usernameController.text;
-                                      String password = passwordController.text;
-                                      if(username.trim().isEmpty || password.trim().isEmpty){
-                                        final snackBar = SnackBar(
-                                          content: Text('Tolong isi semua bidang'),
-                                          backgroundColor: Colors.red,
-                                        );
-                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                      }
-                                      else{
-                                        String? res  = await login(username, password, context, ref, widget.updateSocketFunc);
-                                        if(res != null){
-                                          setLoginState(ref,res);
-                                          Navigator.pushReplacementNamed(context, '/app');
-                                        }
-                                      }
-
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue[400], // Warna latar belakang biru
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10.0), // Membuat tombol berbentuk rounded
-                                      ),
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 12),
-                                      width: double.infinity, // Membuat tombol mengambil lebar penuh
-                                      alignment: Alignment.center, // Membuat konten tombol berada di tengah
-                                      child: Text(
-                                        'Login',
-                                        style: TextStyle(
-                                          color: Colors.white, // Warna teks putih
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ))
+                          )
+                          ,
                         ],
                       ),
                     ),
-                  ))
+                  )
+                ),
+              ),
+              Container(
+                color:Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          String username = usernameController.text;
+                          String password = passwordController.text;
+                          if(username.trim().isEmpty || password.trim().isEmpty){
+                            final snackBar = SnackBar(
+                              content: Text('Tolong isi semua bidang'),
+                              backgroundColor: Colors.red,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+                          else{
+                            String? res  = await login(username, password, context, ref, widget.updateSocketFunc);
+                            if(res != null){
+                              setLoginState(ref,res);
+                              Navigator.pushReplacementNamed(context, '/app');
+                            }
+                          }
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[400], // Warna latar belakang biru
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0), // Membuat tombol berbentuk rounded
+                          ),
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          width: double.infinity, // Membuat tombol mengambil lebar penuh
+                          alignment: Alignment.center, // Membuat konten tombol berada di tengah
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white, // Warna teks putih
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
             ],
           ) ,
         ),

@@ -128,11 +128,11 @@ class _HomeState extends ConsumerState<Home>{
                                           fontSize: responsiveValue.titleFontSize),),
                                       SizedBox(height: 8,),
                                       Expanded(child: Row(
-                                        children: [Flexible(child: Text('${shopItem.itemData['deskripsi']}', textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [Flexible(child: Text('${shopItem.itemData['deskripsi']}', maxLines: 10, textAlign: TextAlign.justify, style: TextStyle(color: Colors.white,
                                           fontSize: responsiveValue.contentFontSize, ), overflow: TextOverflow.ellipsis, ),),],
                                       ),),
                                       SizedBox(height: 8,),
-                                      Spacer(),
                                       ElevatedButton(onPressed: (){
                                         Navigator.of(context).push(MaterialPageRoute(builder: (context){
                                           return ProductDetailPage(productId: shopItem.itemId,);
@@ -195,6 +195,7 @@ class _HomeState extends ConsumerState<Home>{
                 ),),
                 SizedBox(height: 8,),
                 productCards.length != 0 ?GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 300,
